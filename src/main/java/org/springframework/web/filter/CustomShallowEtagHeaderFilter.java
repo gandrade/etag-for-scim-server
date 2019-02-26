@@ -25,7 +25,6 @@ public class CustomShallowEtagHeaderFilter extends ShallowEtagHeaderFilter {
      * <p>The default implementation returns {@code true} if all conditions match:
      * <ul>
      * <li>response status codes in the {@code 2xx} series</li>
-     * <li>request method is a GET</li>
      * <li>response Cache-Control header is not set or does not contain a "no-store" directive</li>
      * </ul>
      *
