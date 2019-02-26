@@ -1,14 +1,10 @@
 package io.github.gandrade.etag;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.filter.CustomShallowEtagHeaderFilter;
-import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 @SpringBootApplication
 public class EtagApplication {
@@ -20,7 +16,7 @@ public class EtagApplication {
     @Bean
     public CustomShallowEtagHeaderFilter customShallowEtagHeaderFilter() {
         CustomShallowEtagHeaderFilter customShallowEtagHeaderFilter = new CustomShallowEtagHeaderFilter();
-        // shallowEtagHeaderFilter.setWriteWeakETag(true);
+        customShallowEtagHeaderFilter.setWriteWeakETag(true);
         return customShallowEtagHeaderFilter;
     }
 }
@@ -28,11 +24,13 @@ public class EtagApplication {
 @RestController
 class EtagController {
 
-
-    @Autowired
     CustomShallowEtagHeaderFilter customShallowEtagHeaderFilter;
 
-    @PutMapping("/test")
+    EtagController(CustomShallowEtagHeaderFilter customShallowEtagHeaderFilter) {
+        this.customShallowEtagHeaderFilter = customShallowEtagHeaderFilter;
+    }
+
+    @PutMapping
     public Hello hi(@RequestBody Hello hello) {
         hello.setName("Hi " + hello.getName());
         return hello;
